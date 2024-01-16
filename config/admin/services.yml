@@ -3,7 +3,17 @@ services:
     public: true
 
     # Grid
-    openarticles.grid.definition.factory
+    openarticles.grid.definition.factory:
       public: true
       class: 'Ericc70\Openarticles\Grid\Definiton\Factory\ArticleDefinitionFactory'
       parent: 'prestashop.core.grid.definition.factory.abstract_grid_definition'
+
+    openarticles.grid.query_builder:
+      class:  'Ericc70\Openarticles\Grid\Query\ArticleQueryBuilder'
+      parent: 'prestashop.core.grid.abstract_query_builder'
+      public: true
+      arguments:
+        - '@prestashop.core.query.doctrine_search_criteria_applicator'
+        - '@=service('prestashop.adapter.legacy.context').getContext().language.id'
+        - '@prestashop.core.grid.query.filter.doctrine_filter_applicator'
+
