@@ -1,0 +1,14 @@
+{
+    "name": "ericc70/openarticles",
+    "autoload": {
+        "psr-4": {
+            "Ericc70\\Openarticles\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "ericc70"
+        }
+    ],
+    "require": {}
+}
