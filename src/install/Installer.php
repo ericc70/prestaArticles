@@ -25,6 +25,7 @@ class Installer
         if (!$this->registerHook($module)) return false;
         if (!$this->installTab()) return false;
         if (!$this->installDatabase()) return false;
+        return true;
     }
 
     public function uninstall()
