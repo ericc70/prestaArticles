@@ -1,0 +1,9 @@
+services:
+  _defaults:
+    public: true
+
+    # Grid
+    openarticles.grid.definition.factory
+      public: true
+      class: 'Ericc70\Openarticles\Grid\Definiton\Factory\ArticleDefinitionFactory'
+      parent: 'prestashop.core.grid.definition.factory.abstract_grid_definition'
