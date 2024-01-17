@@ -46,10 +46,17 @@ class ArticleQueryBuilder extends AbstractDoctrineQueryBuilder
 
     public function getSearchQueryBuilder(SearchCriteriaInterface $searchCriteria)
     {
-        #
+        $db = $this->getQueryBuilder($searchCriteria->getFilters());
+        $db->select('oa.id, oa.position, oa.active')
+        ->addSelect('oal.lang_id, oal.title') ;
+        $this->searchCriteriaApplicator
+        ->applyPagination($searchCriteria, $db)
+        ->applySorting($searchCriteria,$db);
+
+        return $db;
     }
 
-    
+
     public function getCountQueryBuilder(SearchCriteriaInterface $searchCriteria)
     {
           $db = $this->getQueryBuilder( $searchCriteria->getFilters());
