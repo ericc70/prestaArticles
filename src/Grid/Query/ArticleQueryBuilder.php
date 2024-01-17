@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ericc70\Openarticles\Grid\Querry;
+namespace Ericc70\Openarticles\Grid\Query;
 
 use Doctrine\DBAL\Connection;
 
@@ -60,7 +60,7 @@ class ArticleQueryBuilder extends AbstractDoctrineQueryBuilder
     public function getCountQueryBuilder(SearchCriteriaInterface $searchCriteria)
     {
           $db = $this->getQueryBuilder( $searchCriteria->getFilters());
-          $db->select('COUNT(oa.id');
+          $db->select('COUNT(oa.id)');
 
           return $db;
     }
@@ -74,7 +74,7 @@ class ArticleQueryBuilder extends AbstractDoctrineQueryBuilder
             'oa',
             $this->dbPrefix.'open_articles_lang',
             'oal',
-            'oal.open_article_id = oa.id AND oal.lang_id = : lang_id'
+            'oal.open_article_id = oa.id AND oal.lang_id = :lang_id'
         ); 
 
         $sqlFilters = new SqlFilters();
@@ -94,13 +94,13 @@ class ArticleQueryBuilder extends AbstractDoctrineQueryBuilder
                 continue;
             }
             if('title' === $filterName){
-                $db->andWhere('oa.title = :title' );
+                $db->andWhere('oa.title LIKE :title' );
                 $db->setParameter('title ','%'. $filter.'%');
 
                 continue;
             }
             if('position' === $filterName){
-                $db->andWhere('oa.position = :position' );
+                $db->andWhere('oa.position LIKE :position' );
                 $db->setParameter('position ','%'. $filter.'%');
 
                 continue;

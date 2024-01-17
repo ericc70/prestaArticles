@@ -12,7 +12,7 @@ use PrestaShop\PrestaShop\Core\Grid\Column\Type\Common\IdentifierColumn;
 use PrestaShop\PrestaShop\Core\Grid\Definition\Factory\AbstractGridDefinitionFactory;
 
 class ArticleDefinitionFactory extends AbstractGridDefinitionFactory
-{
+{   
     const GRID_ID = "open_article";
 
     
