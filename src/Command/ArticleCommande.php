@@ -98,7 +98,7 @@ final class AddArticleCommand implements ArticleCommandInterface
      *
      * @return  self
      */ 
-    public function setActive(bool $active)
+    public function setActive(bool $active) ;
     {
         $this->active = $active;
 
