@@ -1,0 +1,17 @@
+<?php
+
+namespace Ericc70\Openarticles\Command;
+
+
+interface ArticleCommandInterface{
+
+    public function getProctuctId() :int;
+    
+    public function getPosition() :int;
+
+    public function getActive() :bool;
+    public function getTitle() :array;
+    public function getResume() :array;
+    public function getDescription() :array;
+}
+
