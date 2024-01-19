@@ -37,5 +37,14 @@ services:
       - '@openarticles.grid.data.factory.decorator'
       - '@prestashop.core.grid.filter.form_factory'
       - '@prestashop.core.hook.dispatcher'
-
-
+  
+#Form
+  openarticles.form.identifiable.object.builder:
+    class: 'PrestaShop\Prestashop\Core\Form\IdentifiableObject\Builder\FormBuilder'
+    factory: 'prestashop.core.form.builder.form_builder_factory:create'
+    arguments:
+      - 'Ericc70\Openarticles\Form\Type\ArticleType'
+      - '@openarticles.form.identifiable_object.data.provider'
+  
+  openarticles.form.identifiable_object.data.provider:
+    class: 'Ericc70\Openarticles\Form\Provider\ArticleFormDataProvider'
