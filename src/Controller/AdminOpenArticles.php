@@ -28,12 +28,15 @@ class AdminOpenArticles extends FrameworkBundleAdminController
      public function createAction(Request $request, )
    // public function indexAction(Request $request)
     {
-
+        $formBuilder = $this->get('openarticles.form.identifiable.object.builder');
+        $form = $formBuilder->getForm();
 
         return $this->render('@Modules/openarticles/views/templates/admin/create.html.twig',[
 
             'enableSidebar' => true,
+            'articleForm'=> $form->createView(),
             'layoutTitle' => $this->trans( 'Ajouter un article', 'Module.Openarticles.Admin'),
+
 
      
         ]);

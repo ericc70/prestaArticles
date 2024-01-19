@@ -3,14 +3,16 @@ declare(strict_types=1);
 
 namespace Ericc70\Openarticles\Form\Type;
 
-use Doctrine\DBAL\Types\TextType;
-use PrestaShopBundle\Form\Admin\Type\FormattedTextareaType;
+
 use PrestaShopBundle\Form\Admin\Type\SwitchType;
+use Symfony\Component\Form\FormBuilderInterface;
 use PrestaShopBundle\Form\Admin\Type\TranslateType;
+use PrestaShopBundle\Form\Admin\Type\TranslatableType;
 use PrestaShopBundle\Form\Admin\Type\TranslatorAwareType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use PrestaShopBundle\Form\Admin\Type\FormattedTextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class ArticleType extends TranslatorAwareType
 {
@@ -19,14 +21,14 @@ class ArticleType extends TranslatorAwareType
     {
         parent::buildForm($builder, $options);
 
-        $builder->add('title', TranslateType::class, [
+        $builder->add('title', TranslatableType::class, [
             'type' => TextType::class,
             'required' => true,
-            'labal' => $this->trans('Titre', 'Module.Openarticles.Admin')
+            'label' => $this->trans('Titre', 'Module.Openarticles.Admin')
         ]);
         
-        $builder->add('product', TranslateType::class, [
-            'type' => ChoiceType::class,
+        $builder->add('product', ChoiceType::class, [
+            
             'choices' => [ 
                 'T-shirt'=> 1,
                 'chemise'=> 2,
@@ -34,7 +36,7 @@ class ArticleType extends TranslatorAwareType
             ],
            'choice_translation_domain' => 'Module.Openarticles.Admin',
             'required' => false,
-            'labal' => $this->trans('Produit', 'Module.Openarticles.Admin')
+            'label' => $this->trans('Produit', 'Module.Openarticles.Admin')
         ]);
       
         
@@ -44,7 +46,7 @@ class ArticleType extends TranslatorAwareType
             'locales' => $this->locales,
             'hideTabs' => false,
             
-            'labal' => $this->trans('Resume', 'Module.Openarticles.Admin')
+            'label' => $this->trans('Resume', 'Module.Openarticles.Admin')
         ]);
 
                
@@ -54,15 +56,15 @@ class ArticleType extends TranslatorAwareType
             'locales' => $this->locales,
             'hideTabs' => false,
             
-            'labal' => $this->trans('Description', 'Module.Openarticles.Admin')
+            'label' => $this->trans('Description', 'Module.Openarticles.Admin')
         ]);
 
-        $builder->add('active', TranslateType::class, [
-            'type' => SwitchType::class,
-   
-            'labal' => $this->trans('Active', 'Module.Openarticles.Admin')
+        $builder->add('active', SwitchType::class, [
+           
+            'label' => $this->trans('Active', 'Module.Openarticles.Admin')
         ]);
         
 
     }
 }
+

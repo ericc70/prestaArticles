@@ -39,6 +39,14 @@ services:
       - '@prestashop.core.hook.dispatcher'
   
 #Form
+  openarticles.type.article:
+    class: 'Ericc70\Openarticles\Form\Type\ArticleType'
+    parent: 'form.type.translatable.aware'
+    public: 'true'
+    tags:
+      - { name: form.type} 
+
+
   openarticles.form.identifiable.object.builder:
     class: 'PrestaShop\Prestashop\Core\Form\IdentifiableObject\Builder\FormBuilder'
     factory: 'prestashop.core.form.builder.form_builder_factory:create'
