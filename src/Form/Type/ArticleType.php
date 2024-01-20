@@ -27,7 +27,7 @@ class ArticleType extends TranslatorAwareType
             'label' => $this->trans('Titre', 'Module.Openarticles.Admin')
         ]);
         
-        $builder->add('product', ChoiceType::class, [
+        $builder->add('product_id', ChoiceType::class, [
             
             'choices' => [ 
                 'T-shirt'=> 1,

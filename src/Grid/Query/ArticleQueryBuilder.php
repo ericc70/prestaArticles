@@ -47,11 +47,13 @@ class ArticleQueryBuilder extends AbstractDoctrineQueryBuilder
     public function getSearchQueryBuilder(SearchCriteriaInterface $searchCriteria)
     {
         $db = $this->getQueryBuilder($searchCriteria->getFilters());
-        $db->select('oa.id, oa.position, oa.active')
-        ->addSelect('oal.lang_id, oal.title') ;
+        $db->select('oa.id article_id, oa.position, oa.active')
+            ->addSelect('oal.lang_id, oal.title ')
+            // ->addSelect('pl.name');
+            ->addSelect('pl.name product');
         $this->searchCriteriaApplicator
-        ->applyPagination($searchCriteria, $db)
-        ->applySorting($searchCriteria,$db);
+            ->applyPagination($searchCriteria, $db)
+            ->applySorting($searchCriteria, $db);
 
         return $db;
     }
@@ -59,23 +61,30 @@ class ArticleQueryBuilder extends AbstractDoctrineQueryBuilder
 
     public function getCountQueryBuilder(SearchCriteriaInterface $searchCriteria)
     {
-          $db = $this->getQueryBuilder( $searchCriteria->getFilters());
-          $db->select('COUNT(oa.id)');
+        $db = $this->getQueryBuilder($searchCriteria->getFilters());
+        $db->select('COUNT(oa.id)');
 
-          return $db;
+        return $db;
     }
 
-    private function getQueryBuilder(array $filterValues) :QueryBuilder
+    private function getQueryBuilder(array $filterValues): QueryBuilder
     {
         $db = $this->connection
-        ->createQueryBuilder()
-        ->from($this->dbPrefix.'open_articles', 'oa')
-        ->leftjoin(
-            'oa',
-            $this->dbPrefix.'open_articles_lang',
-            'oal',
-            'oal.open_article_id = oa.id AND oal.lang_id = :lang_id'
-        ); 
+            ->createQueryBuilder()
+            ->from($this->dbPrefix . 'open_articles', 'oa')
+            ->leftjoin(
+                'oa',
+                $this->dbPrefix . 'open_articles_lang',
+                'oal',
+                'oal.open_article_id = oa.id AND oal.lang_id = :lang_id'
+            )
+
+            ->leftjoin(
+                'oa',
+                $this->dbPrefix . 'product_lang',
+                'pl',
+                'pl.id_product = oa.product_id AND pl.id_lang = :lang_id'
+            );
 
         $sqlFilters = new SqlFilters();
         $sqlFilters->addFilter(
@@ -86,27 +95,26 @@ class ArticleQueryBuilder extends AbstractDoctrineQueryBuilder
         $this->filterApplicator->apply($db, $sqlFilters, $filterValues);
         $db->setParameter('lang_id', $this->contextLangId);
 
-        foreach ($filterValues as $filterName => $filter){
-            if('active' === $filterName){
-                $db->andWhere('oa.active = :active' );
+        foreach ($filterValues as $filterName => $filter) {
+            if ('active' === $filterName) {
+                $db->andWhere('oa.active = :active');
                 $db->setParameter('active', $filter);
 
                 continue;
             }
-            if('title' === $filterName){
-                $db->andWhere('oa.title LIKE :title' );
-                $db->setParameter('title ','%'. $filter.'%');
+            if ('title' === $filterName) {
+                $db->andWhere('oa.title LIKE :title');
+                $db->setParameter('title ', '%' . $filter . '%');
 
                 continue;
             }
-            if('position' === $filterName){
-                $db->andWhere('oa.position LIKE :position' );
-                $db->setParameter('position ','%'. $filter.'%');
+            if ('position' === $filterName) {
+                $db->andWhere('oa.position LIKE :position');
+                $db->setParameter('position ', '%' . $filter . '%');
 
                 continue;
             }
-         
         }
-            return $db;
+        return $db;
     }
 }

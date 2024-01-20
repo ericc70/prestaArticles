@@ -21,3 +21,11 @@ interface ArticleCommandInterface{
     public function setDescription(array $description) :ArticleCommandInterface;
 }
 
+//     public function setProductId(int $productId) :ArticleCommandInterface;
+//     public function setPosition(int $position) :ArticleCommandInterface;
+//     public function setActive(bool $active) :ArticleCommandInterface;
+//     public function setTitle(array $title) :ArticleCommandInterface;
+//     public function setResume(array $resume) :ArticleCommandInterface;
+//     public function setDescription(array $description) :ArticleCommandInterface;
+// }
+

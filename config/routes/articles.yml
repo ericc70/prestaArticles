@@ -15,3 +15,25 @@ ec_article_create:
     _disable_module_prefix: true
     _legacy_controller: AdminOpenArticles
     _legacy_link: AdminOpenArticles
+
+ec_article_edit:
+  path: /{articleId}/edit
+  methods: [GET, POST]
+  defaults: 
+    _controller: Ericc70\Openarticles\Controller\AdminOpenArticles::editAction
+    _disable_module_prefix: true
+    _legacy_controller: AdminOpenArticles
+    _legacy_link: AdminOpenArticles
+  requirements:
+    articleId: \d+
+
+ec_article_delete:
+  path: /{articleId}/delete
+  methods: [POST]
+  defaults: 
+    _controller: Ericc70\Openarticles\Controller\AdminOpenArticles::deleteAction
+    _disable_module_prefix: true
+    _legacy_controller: AdminOpenArticles
+    _legacy_link: AdminOpenArticles
+  requirements:
+    articleId: \d+

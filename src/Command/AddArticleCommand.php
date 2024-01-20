@@ -13,7 +13,7 @@ final class AddArticleCommand implements ArticleCommandInterface
     /**
      * @var int
      */
-    private $position;
+    private $position = 1;
     /**
      * @var bool
      */
@@ -31,14 +31,14 @@ final class AddArticleCommand implements ArticleCommandInterface
      */
     private $description;
 
-    
+
 
     /**
      * Get the value of productId
      *
      * @return  int
-     */ 
-    public function getProductId():int
+     */
+    public function getProductId(): int
     {
         return $this->productId;
     }
@@ -49,8 +49,8 @@ final class AddArticleCommand implements ArticleCommandInterface
      * @param  int  $productId
      *
      * @return  self
-     */ 
-    public function setProductId(int $productId)
+     */
+    public function setProductId(int $productId): ArticleCommandInterface
     {
         $this->productId = $productId;
 
@@ -61,8 +61,8 @@ final class AddArticleCommand implements ArticleCommandInterface
      * Get the value of position
      *
      * @return  int
-     */ 
-    public function getPosition():int
+     */
+    public function getPosition(): int
     {
         return $this->position;
     }
@@ -73,8 +73,8 @@ final class AddArticleCommand implements ArticleCommandInterface
      * @param  int  $position
      *
      * @return  self
-     */ 
-    public function setPosition(int $position)
+     */
+    public function setPosition(int $position): ArticleCommandInterface
     {
         $this->position = $position;
 
@@ -85,8 +85,8 @@ final class AddArticleCommand implements ArticleCommandInterface
      * Get the value of active
      *
      * @return  bool
-     */ 
-    public function isActive() :bool
+     */
+    public function isActive(): bool
     {
         return $this->active;
     }
@@ -97,9 +97,10 @@ final class AddArticleCommand implements ArticleCommandInterface
      * @param  bool  $active
      *
      * @return  self
-     */ 
-    public function setActive(bool $active) ;
+     */
+    public function setActive(bool $active): ArticleCommandInterface
     {
+
         $this->active = $active;
 
         return $this;
@@ -109,8 +110,8 @@ final class AddArticleCommand implements ArticleCommandInterface
      * Get the value of title
      *
      * @return  string[]
-     */ 
-    public function getTitle():array
+     */
+    public function getTitle(): array
     {
         return $this->title;
     }
@@ -121,8 +122,8 @@ final class AddArticleCommand implements ArticleCommandInterface
      * @param  string[]  $title
      *
      * @return  self
-     */ 
-    public function setTitle(array $title)
+     */
+    public function setTitle(array $title): ArticleCommandInterface
     {
         $this->title = $title;
 
@@ -133,8 +134,8 @@ final class AddArticleCommand implements ArticleCommandInterface
      * Get the value of resume
      *
      * @return  string[]
-     */ 
-    public function getResume():array
+     */
+    public function getResume(): array
     {
         return $this->resume;
     }
@@ -145,8 +146,8 @@ final class AddArticleCommand implements ArticleCommandInterface
      * @param  string[]  $resume
      *
      * @return  self
-     */ 
-    public function setResume(array $resume)
+     */
+    public function setResume(array $resume): ArticleCommandInterface
     {
         $this->resume = $resume;
 
@@ -157,8 +158,8 @@ final class AddArticleCommand implements ArticleCommandInterface
      * Get the value of description
      *
      * @return  string[]
-     */ 
-    public function getDescription():array
+     */
+    public function getDescription(): array
     {
         return $this->description;
     }
@@ -169,8 +170,8 @@ final class AddArticleCommand implements ArticleCommandInterface
      * @param  string[]  $description
      *
      * @return  self
-     */ 
-    public function setDescription(array $description)
+     */
+    public function setDescription(array $description): ArticleCommandInterface
     {
         $this->description = $description;
 

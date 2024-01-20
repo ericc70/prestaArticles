@@ -5,19 +5,19 @@ declare(strict_types=1);
 namespace Ericc70\Openarticles\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+
 use Doctrine\ORM\Mapping as ORM;
 
-
 /**
- * @ORM\ Table()
- * @ORM\ Entity(repositoryClass=" Ericc70\Openarticles\Repository\ArticleRepository)
+ * @ORM\Table()
+ * @ORM\Entity(repositoryClass="Ericc70\Openarticles\Repository\ArticleRepository")
  */
 class OpenArticles{
 
     /**
      * @ORM\Id() 
      * @ORM\Column(name="id", type="integer")
-     * @ORM\GeneratedValur(strategy="AUTO")
+     * @ORM\GeneratedValue(strategy="AUTO")
      * 
      */
     private $id ;
@@ -37,7 +37,7 @@ class OpenArticles{
     private $active ;
 
      /**
-     * @ORM\OneToMany(targetEntity="OpenArticlesLang" , cascade={"persist", "remove"}, mappedBy="article )
+    * @ORM\OneToMany(targetEntity="OpenArticlesLang", cascade={"persist", "remove"}, mappedBy="article")
      */
     private $articleLangs ;
 

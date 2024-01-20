@@ -11,7 +11,7 @@ use Ericc70\Openarticles\ValueObject\ArticleId;
 
 use PrestaShopBundle\Entity\Repository\LangRepository;
 
-class AddArticleCommandHandler
+class AddArticleCommandHandler implements AddArticleCommandHandlerInterface
 {
     /***
      * @var LanRepository
@@ -54,12 +54,16 @@ class AddArticleCommandHandler
                 $articleLang = new OpenArticlesLang();
                 $articleLang->setLang($l);
 
-                if (isset($command->getTitle()[$l->getId])) {
-                    $articleLang->setResume($command->getResume()[$l->getId]);
+                if (isset($command->getTitle()[$l->getId()])) {
+                    $articleLang->setTitle($command->getTitle()[$l->getId()]);
                 }
-                if (isset($command->getDescription()[$l->getId])) {
-                    $articleLang->setDescription($command->getDescription()[$l->getId]);
+                if (isset($command->getResume()[$l->getId()])) {
+                    $articleLang->setResume($command->getResume()[$l->getId()]);
                 }
+                if (isset($command->getDescription()[$l->getId() ])) {
+                    $articleLang->setDescription($command->getDescription()[$l->getId()]);
+                }
+                $entity->addArticleLangs($articleLang);
             }
 
                 $this->entityManager->persist($entity);

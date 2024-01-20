@@ -4,23 +4,25 @@ declare(strict_types=1);
 
 namespace Ericc70\Openarticles\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 /**
- * @ORM\ Table()
- * @ORM\ Entity(repositoryClass=" Ericc70\Openarticles\Repository\ArticleRepository)
+ * @ORM\Table()
+ * @ORM\Entity(repositoryClass="Ericc70\Openarticles\Repository\ArticleRepository")
  */
 class OpenArticlesLang {
 
+
        /**
      * @ORM\Id() 
-     * @ORM\ManyToMany(targetEntity="Ericc70\Openarticles\Entity\OpenArticles" , inversedBy="articleLangs")
+     * @ORM\ManyToOne(targetEntity="Ericc70\Openarticles\Entity\OpenArticles" , inversedBy="articleLangs")
      * @ORM\JoinColumn(name="open_article_id", referencedColumnName="id", nullable=false)
      * 
      */
     private $article;
      /**
      * @ORM\Id() 
-     * @ORM\ManyToMany(targetEntity="PrestaShopBundle\Entity\Lang" , inversedBy="articleLangs" )
-     * @ORM\JoinColumn(name="lang_id", referencedColumnName="id", nullable=false, onDelete="CASCADE" )
+     * @ORM\ManyToOne(targetEntity="PrestaShopBundle\Entity\Lang"  )
+     * @ORM\JoinColumn(name="lang_id", referencedColumnName="id_lang", nullable=false, onDelete="CASCADE" )
      * 
      */
     private $lang;

@@ -26,11 +26,11 @@ class ArticleDefinitionFactory extends AbstractGridDefinitionFactory
     }
     protected function getColumns(){
         return (new ColumnCollection())
-            ->add((new IdentifierColumn('id'))
+            ->add((new IdentifierColumn('article_id'))
             ->setName($this->trans('ID', [],'AdminGlobal' ))
             ->setOptions([
-                'identifier_field' => 'id',
-                'bulk_field' => 'id',
+                'identifier_field' => 'article_id',
+                'bulk_field' => 'article_id',
                 'with_bulk_field' => true,
                 'clickable' => false
             ])
@@ -57,7 +57,7 @@ class ArticleDefinitionFactory extends AbstractGridDefinitionFactory
                         ->setName('Edit')
                         ->setIcon('edit')
                         ->setOptions([
-                            'route' => 'oit_article_edit',
+                            'route' => 'ec_article_edit',
                             'route_param_name' => 'articleId',
                             'route_param_field' => 'article_id',
                             // A click on the row will have the same effect as this action
@@ -70,7 +70,7 @@ class ArticleDefinitionFactory extends AbstractGridDefinitionFactory
                         ->setIcon('delete')
                         ->setOptions([
                             'confirm_message' => 'Delete selected item?',
-                            'route' => 'oit_article_delete',
+                            'route' => 'ec_article_delete',
                             'route_param_name' => 'articleId',
                             'route_param_field' => 'article_id',
                             'confirm_message' => $this->trans(
