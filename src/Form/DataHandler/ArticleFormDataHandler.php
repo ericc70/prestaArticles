@@ -2,6 +2,7 @@
 namespace Ericc70\Openarticles\Form\DataHandler;
 
 use Ericc70\Openarticles\CommandBuilder\ArticleCommandBuilderInterface;
+use Ericc70\Openarticles\ValueObject\ArticleId;
 use PrestaShop\PrestaShop\Core\CommandBus\CommandBusInterface;
 use PrestaShop\PrestaShop\Core\Form\IdentifiableObject\DataHandler\FormDataHandlerInterface;
 
@@ -39,7 +40,9 @@ class ArticleFormDataHandler implements FormDataHandlerInterface
 
     public function update( $id, array $data)
     {
-
+        $command = $this->builder->buildEditCommand(new ArticleId($id), $data);
+        $articleId = $this->commandBus->handle($command);
+        return $articleId;
     }
 
 

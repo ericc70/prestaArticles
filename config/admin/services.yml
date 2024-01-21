@@ -43,6 +43,8 @@ services:
     class: 'Ericc70\Openarticles\Form\Type\ArticleType'
     parent: 'form.type.translatable.aware'
     public: 'true'
+    arguments:
+      - '@openarticles.repository.article_repository'
     tags:
       - { name: form.type} 
 
@@ -56,6 +58,8 @@ services:
   
   openarticles.form.identifiable_object.data.provider:
     class: 'Ericc70\Openarticles\Form\Provider\ArticleFormDataProvider'
+    arguments: 
+     - '@openarticles.repository.article_repository'
 
     ## FORM HANDLER
 
@@ -82,5 +86,22 @@ services:
     tags:
      - { name: 'tactician.handler' , command: 'Ericc70\Openarticles\Command\AddArticleCommand'}
 
-  
+  openarticles.command.handler.edit_article:
+    class: 'Ericc70\Openarticles\CommandHandler\EditArticleCommandHandler'
+    arguments:
+       - '@prestashop.core.admin.lang.repository'
+       - '@openarticles.repository.article_repository'
+       - '@doctrine.orm.default_entity_manager'
+    tags:
+     - { name: 'tactician.handler' , command: 'Ericc70\Openarticles\Command\EditArticleCommand'}
+
+  # REPOSITORY
+
+  openarticles.repository.article_repository:
+    class: 'Ericc70\Openarticles\ArticleRepository'
+    factory: [ '@doctrine.orm.default_entity_manager', getRepository ]
+    arguments: 
+     - Ericc70\Openarticles\Entity\OpenArticles
+
+
     

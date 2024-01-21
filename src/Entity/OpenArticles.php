@@ -129,7 +129,7 @@ class OpenArticles{
     /**
      * Get the value of articleLangs
      */ 
-    public function getArticleLangs() :ArrayCollection
+    public function getArticleLangs() 
     {
         return $this->articleLangs;
     }

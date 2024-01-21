@@ -17,6 +17,7 @@ class ArticleId{
 
     public function getValue()
     {
+      
         return $this->articleId;
     }
 

@@ -56,10 +56,18 @@ class AdminOpenArticles extends FrameworkBundleAdminController
     {
        
 
+        $formBuilder = $this->get('openarticles.form.identifiable.object.builder');
+        $form = $formBuilder->getFormFor($articleId);
+        $form->handleRequest($request);
         $formHandler = $this->get('openarticles.form.identifiable.object.handler');
-        $form = $formHandler->handle();
-        return $this->render('@Modules/openarticles/views/templates/admin/create.html.twig', [
+        $result = $formHandler->handleFor($articleId, $form);
+        if ($result->getIdentifiableObjectId() !== null)
+        {
+            $this->addFlash('succes' , $this->trans('Article modifier avec succes', 'Modules.OpenArticles.Admin'));
+            return $this->redirectToRoute('oit_article_index');
+        }
 
+        return $this->render('@Modules/openarticles/views/templates/admin/create.html.twig', [
             'enableSidebar' => true,
             'articleForm' => $form->createView(),
             'layoutTitle' => $this->trans('Modifier un article', 'Module.Openarticles.Admin'),
