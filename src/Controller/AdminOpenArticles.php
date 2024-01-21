@@ -2,7 +2,10 @@
 
 namespace Ericc70\Openarticles\Controller;
 
+use Ericc70\Openarticles\Command\DeletetArticleCommand;
+use Ericc70\Openarticles\CommandHandler\DeleteArticleCommandHandler;
 use Ericc70\Openarticles\Grid\Filters\ArticleFilters;
+use Ericc70\Openarticles\ValueObject\ArticleId;
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -75,6 +78,25 @@ class AdminOpenArticles extends FrameworkBundleAdminController
 
 
         ]);
+    }
+
+    public function deleteAction(int $articleId ){
+
+        $res = $this->getCommandBus()->handle( new DeletetArticleCommand(new ArticleId($articleId)) );
+        if($res) {
+            // $this->deleteUploadedImage($articleId);
+            $this->addFlash(
+                'succes',
+                $this->trans('Article supprimé avec succeess !', "Module.Openarticles.Admin")
+            );
+        }else{
+            $this->addFlash(
+                'error',
+                $this->trans('Erreur survenu, article n\'a pas été supprimé !', "Module.Openarticles.Admin")
+            );
+        }
+        return $this->redirectToRoute('oit_article_index');
+
     }
 
     public function getToolBarButtons()

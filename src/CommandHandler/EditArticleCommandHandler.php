@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 namespace Ericc70\Openarticles\CommandHandler;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,10 +22,10 @@ final class EditArticleCommandHandler implements EditArticleCommandHandlerInterf
      */
     private $langRepository;
 
-/**
- * @var ArticleRepository
- */
-private $repositoryArticle;
+    /**
+     * @var ArticleRepository
+     */
+    private $repositoryArticle;
 
     /**
      * Undocumented variable
@@ -34,19 +35,19 @@ private $repositoryArticle;
     private EntityManagerInterface $entityManager;
 
     public function __construct(
-        LangRepository $langRepository, 
+        LangRepository $langRepository,
         ArticleRepository $repositoryArticle,
-        EntityManagerInterface  $entityManager)
-    {
+        EntityManagerInterface  $entityManager
+    ) {
         $this->langRepository = $langRepository;
         $this->entityManager = $entityManager;
         $this->repositoryArticle = $repositoryArticle;
     }
 
-    public function handle(EditArticleCommandInterface $command) :ArticleId
-   {
+    public function handle(EditArticleCommandInterface $command): ArticleId
+    {
 
-    $entity = $this->repositoryArticle->find($command->getArticleId()->getValue());
+        $entity = $this->repositoryArticle->find($command->getArticleId()->getValue());
         $this->updateArticleFromCommand($entity, $command);
         return new ArticleId($entity->getId());
     }
@@ -62,21 +63,20 @@ private $repositoryArticle;
 
             $languages = $this->langRepository->findAll();
 
-            
+
             foreach ($languages as $l) {
                 $articleLang = null;
-                foreach ($entity->getArticleLangs() as $al){
-                    if($al->getLang()->getId()== $l->getId() ){
+                foreach ($entity->getArticleLangs() as $al) {
+                    if ($al->getLang()->getId() == $l->getId()) {
                         $articleLang = $al;
                     }
                 }
 
-                if (null === $articleLang )
-                {
+                if (null === $articleLang) {
                     $articleLang = new OpenArticlesLang();
                 }
 
-               
+
                 $articleLang->setLang($l);
 
                 if (isset($command->getTitle()[$l->getId()])) {
@@ -85,20 +85,16 @@ private $repositoryArticle;
                 if (isset($command->getResume()[$l->getId()])) {
                     $articleLang->setResume($command->getResume()[$l->getId()]);
                 }
-                if (isset($command->getDescription()[$l->getId() ])) {
+                if (isset($command->getDescription()[$l->getId()])) {
                     $articleLang->setDescription($command->getDescription()[$l->getId()]);
                 }
                 $entity->addArticleLangs($articleLang);
             }
 
-                $this->entityManager->persist($entity);
-                $this->entityManager->flush();
-
+            $this->entityManager->persist($entity);
+            $this->entityManager->flush();
         } catch (CannotUpdateArticleException $th) {
             throw new CannotUpdateArticleException("Une erreur c'est produite, impossible de modifier un article");
         }
     }
-
-
-  
 }
