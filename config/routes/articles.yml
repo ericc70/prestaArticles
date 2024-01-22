@@ -37,3 +37,14 @@ ec_article_delete:
     _legacy_link: AdminOpenArticles
   requirements:
     articleId: \d+
+
+ec_delete_bulk:
+  path: /delete-bulk
+  methods: [POST]
+  defaults: 
+    _controller: Ericc70\Openarticles\Controller\AdminOpenArticles::deleteBulkAction
+    _disable_module_prefix: true
+    _legacy_controller: AdminOpenArticles
+    _legacy_link: AdminOpenArticles
+
+

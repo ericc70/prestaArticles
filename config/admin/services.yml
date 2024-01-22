@@ -103,6 +103,14 @@ services:
     tags:
      - { name: 'tactician.handler' , command: 'Ericc70\Openarticles\Command\DeletetArticleCommand'}
 
+  openarticles.command.handler.bulk_delete_article:
+    class: 'Ericc70\Openarticles\CommandHandler\BulkDeleteArticleCommandHandler'
+    arguments:
+       - '@openarticles.repository.article_repository'
+       - '@doctrine.orm.default_entity_manager'
+    tags:
+     - { name: 'tactician.handler' , command: 'Ericc70\Openarticles\Command\BulkDeleteArticleCommand'}
+
   # REPOSITORY
 
   openarticles.repository.article_repository:

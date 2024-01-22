@@ -2,10 +2,14 @@
 
 namespace Ericc70\Openarticles\Controller;
 
+use Ericc70\Openarticles\Command\BulkDeleteArticleCommand;
 use Ericc70\Openarticles\Command\DeletetArticleCommand;
 use Ericc70\Openarticles\CommandHandler\DeleteArticleCommandHandler;
+use Ericc70\Openarticles\Exception\InvalidArticleExcaption;
 use Ericc70\Openarticles\Grid\Filters\ArticleFilters;
 use Ericc70\Openarticles\ValueObject\ArticleId;
+use PhpParser\Node\Stmt\TryCatch;
+
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -78,6 +82,34 @@ class AdminOpenArticles extends FrameworkBundleAdminController
 
 
         ]);
+    }
+
+
+    public function deleteBulkAction(Request $request){
+      
+      
+        try {
+
+              $articleToDelete = $request->request->get('open_article_article_id');
+            if(!empty($articleToDelete)){
+                $articleToDelete = array_map(function($i){
+                    return (int) $i;
+            } , $articleToDelete );
+            }
+
+            $this->getCommandBus()->handle(new BulkDeleteArticleCommand($articleToDelete));
+        
+            $this->addFlash('success', $this->trans('Article supprimé', "Modules.OpenArticles.Admin"));
+
+            return $this->redirectToRoute('oit_article_index');
+
+        } catch (InvalidArticleExcaption $th) {
+
+            $this->addFlash(
+                'error',
+                $this->trans('Erreur survenu, article n\'a pas été supprimé !', "Module.Openarticles.Admin")
+            );
+        }
     }
 
     public function deleteAction(int $articleId ){

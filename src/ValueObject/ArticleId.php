@@ -2,6 +2,7 @@
 
 namespace Ericc70\Openarticles\ValueObject;
 
+
 use Ericc70\Openarticles\Exception\InvalidArticleExcaption;
 
 class ArticleId{

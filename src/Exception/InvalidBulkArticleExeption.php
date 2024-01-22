@@ -3,7 +3,7 @@
 namespace Ericc70\Openarticles\Exception;
 
 
-class InvalidArticleExcaption extends \Exception{
+class InvalidBulkArticleExeption extends \Exception {
 
      
 }
