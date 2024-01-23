@@ -47,4 +47,16 @@ ec_delete_bulk:
     _legacy_controller: AdminOpenArticles
     _legacy_link: AdminOpenArticles
 
+  
+
+ec_toggle_status:
+  path: /{articleId}/toggle-status
+  methods: [POST]
+  defaults: 
+    _controller: Ericc70\Openarticles\Controller\AdminOpenArticles::toogleAction
+    _disable_module_prefix: true
+    _legacy_controller: AdminOpenArticles
+    _legacy_link: AdminOpenArticles
+  requirements:
+    articleId: \d+
 

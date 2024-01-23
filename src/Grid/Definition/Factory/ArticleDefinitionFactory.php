@@ -10,6 +10,7 @@ use PrestaShop\PrestaShop\Core\Grid\Column\ColumnCollection;
 use PrestaShop\PrestaShop\Core\Grid\Column\Type\Common\ActionColumn;
 use PrestaShop\PrestaShop\Core\Grid\Column\Type\Common\DataColumn;
 use PrestaShop\PrestaShop\Core\Grid\Column\Type\Common\IdentifierColumn;
+use PrestaShop\PrestaShop\Core\Grid\Column\Type\Common\ToggleColumn;
 use PrestaShop\PrestaShop\Core\Grid\Definition\Factory\AbstractGridDefinitionFactory;
 use PrestaShop\PrestaShop\Core\Grid\Definition\Factory\BulkDeleteActionTrait;
 
@@ -49,6 +50,16 @@ class ArticleDefinitionFactory extends AbstractGridDefinitionFactory
             ->setName($this->trans('Produit', [],'Modules.OpenArticles.Admin' ))
             ->setOptions([
                 'field'=> 'product',
+            ])
+            )
+            ->add((new ToggleColumn('active'))
+            ->setName($this->trans('Displyed', [],'Admin.Global' ))
+            ->setOptions([
+                'field'=> 'active',
+                'primary_field' => 'article_id',
+                'route' => 'ec_toggle_status',
+                'route_param_name' => 'articleId',
+
             ])
             )
             ->add(
