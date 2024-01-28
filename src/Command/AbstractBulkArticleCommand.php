@@ -39,7 +39,8 @@ abstract class AbstractBulkArticleCommand implements BulkArticleCommandInterface
     public function setArticleIds(array $articleIds)
     {
         foreach ($articleIds as $id) {
-            $this->articleId[] = new ArticleId($id);
+   
+            $this->articleId[] =new ArticleId((int) $id);
         }
         return $this;
     }

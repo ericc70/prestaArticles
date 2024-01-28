@@ -3,6 +3,8 @@
 namespace Ericc70\Openarticles\Controller;
 
 use Ericc70\Openarticles\Command\BulkDeleteArticleCommand;
+use Ericc70\Openarticles\Command\BulkDisableArticleCommand;
+use Ericc70\Openarticles\Command\BulkEnableArticleCommand;
 use Ericc70\Openarticles\Command\DeletetArticleCommand;
 use Ericc70\Openarticles\Command\ToggleArticleCommand;
 use Ericc70\Openarticles\CommandHandler\DeleteArticleCommandHandler;
@@ -144,7 +146,7 @@ class AdminOpenArticles extends FrameworkBundleAdminController
                 "message" => $this->trans('Le status à bien été mis à jour', 'Module.Openarticle.Admin')
             ];
         } catch (InvalidArticleExcaption $th) {
-         
+
             $$response = [
                 "status" => "error",
                 "message" => $this->trans('Le status à bien été mis à jour', 'Module.Openarticle.Admin')
@@ -152,6 +154,57 @@ class AdminOpenArticles extends FrameworkBundleAdminController
         }
 
         return $this->json($response);
+    }
+
+
+    public function enableBulkAction(Request $request)
+    {
+        
+        try {
+
+            $articleEnable = $request->request->get('open_article_article_id');
+            if (!empty($articleEnable)) {
+                $articleToDelete = array_map(function ($i) {
+                    return (int) $i;
+                }, $articleEnable);
+            }
+
+            $this->getCommandBus()->handle(new BulkEnableArticleCommand($articleEnable));
+
+            $this->addFlash('success', $this->trans('Article enable avec succes', "Modules.OpenArticles.Admin"));
+        } catch (InvalidArticleExcaption $th) {
+
+            $this->addFlash(
+                'error',
+                $this->trans('Erreur survenu, article n\'a pas été activé avec succes !', "Module.Openarticles.Admin")
+            );
+        }
+        return $this->redirectToRoute('oit_article_index');
+    }
+
+    public function disableBulkAction(Request $request)
+    {
+
+        try {
+
+            $articleDisable = $request->request->get('open_article_article_id');
+            if (!empty($articleDisable)) {
+                $articleToDelete = array_map(function ($i) {
+                    return (int) $i;
+                }, $articleDisable);
+            }
+
+            $this->getCommandBus()->handle(new BulkDisableArticleCommand($articleDisable));
+
+            $this->addFlash('success', $this->trans('Article disable', "Modules.OpenArticles.Admin"));
+        } catch (InvalidArticleExcaption $th) {
+
+            $this->addFlash(
+                'error',
+                $this->trans('Erreur survenu, article n\'a pas été desactivé avec succes !', "Module.Openarticles.Admin")
+            );
+        }
+        return $this->redirectToRoute('oit_article_index');
     }
 
     public function getToolBarButtons()
