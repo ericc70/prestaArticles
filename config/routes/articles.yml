@@ -7,6 +7,24 @@ oit_article_index:
     _legacy_controller: AdminOpenArticles
     _legacy_link: AdminOpenArticles
 
+ec_article_search:
+  path: /
+  methods: POST
+  defaults: 
+    _controller: Ericc70\Openarticles\Controller\AdminOpenArticles::searchAction
+    _disable_module_prefix: true
+    _legacy_controller: AdminOpenArticles
+    _legacy_link: AdminOpenArticles
+
+ec_article_export:
+  path: /export
+  methods: Get
+  defaults: 
+    _controller: Ericc70\Openarticles\Controller\AdminOpenArticles::exportAction
+    _disable_module_prefix: true
+    _legacy_controller: AdminOpenArticles
+    _legacy_link: AdminOpenArticles
+
 ec_article_create:
   path: /create
   methods: [GET, POST]
@@ -64,6 +82,15 @@ ec_bulk_status_disable:
   methods: [POST]
   defaults: 
     _controller: Ericc70\Openarticles\Controller\AdminOpenArticles::disableBulkAction
+    _disable_module_prefix: true
+    _legacy_controller: AdminOpenArticles
+    _legacy_link: AdminOpenArticles
+
+ec_update_positions:
+  path: /update-positions
+  methods: [GET]
+  defaults: 
+    _controller: Ericc70\Openarticles\Controller\AdminOpenArticles::updatePositionsAction
     _disable_module_prefix: true
     _legacy_controller: AdminOpenArticles
     _legacy_link: AdminOpenArticles

@@ -4,6 +4,7 @@ declare(strict_type=1);
 namespace Ericc70\Openarticles\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Exception;
 
 class ArticleRepository extends EntityRepository
 {
@@ -25,5 +26,36 @@ class ArticleRepository extends EntityRepository
         }
 
         return $data;
+    }
+
+ 
+        /**
+     * @param array $positionsData
+     * @return void
+     * @throws ConnectionException
+     */
+    public function updatePositions(array $positionsData = []): void
+    {
+        try {
+            $this->_em->getConnection()->beginTransaction();
+
+            $i = 0;
+            foreach ($positionsData['positions'] as $position) {
+                $qb = $this->_em->getConnection()->createQueryBuilder();
+                $qb
+                    ->update(_DB_PREFIX_ . 'open_articles')
+                    ->set('position', ':position')
+                    ->andWhere('id = :articleId')
+                    ->setParameter('articleId', $position['rowId'])
+                    ->setParameter('position', $i);
+
+                ++$i;
+
+                $qb->execute();
+            }
+            $this->_em->getConnection()->commit();
+        } catch (Exception $e) {
+            $this->_em->getConnection()->rollBack();
+        }
     }
 }

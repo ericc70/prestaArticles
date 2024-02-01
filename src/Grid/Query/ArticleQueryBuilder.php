@@ -48,7 +48,7 @@ class ArticleQueryBuilder extends AbstractDoctrineQueryBuilder
     {
         $db = $this->getQueryBuilder($searchCriteria->getFilters());
         $db->select('oa.id article_id, oa.position, oa.active')
-            ->addSelect('oal.lang_id, oal.title ')
+            ->addSelect('oal.lang_id, oal.title , oal.resume, oal.description ')
             // ->addSelect('pl.name');
             ->addSelect('pl.name product');
         $this->searchCriteriaApplicator
@@ -96,6 +96,7 @@ class ArticleQueryBuilder extends AbstractDoctrineQueryBuilder
         $db->setParameter('lang_id', $this->contextLangId);
 
         foreach ($filterValues as $filterName => $filter) {
+         
             if ('active' === $filterName) {
                 $db->andWhere('oa.active = :active');
                 $db->setParameter('active', $filter);
@@ -103,14 +104,27 @@ class ArticleQueryBuilder extends AbstractDoctrineQueryBuilder
                 continue;
             }
             if ('title' === $filterName) {
-                $db->andWhere('oa.title LIKE :title');
-                $db->setParameter('title ', '%' . $filter . '%');
+                $db->andWhere('oal.title LIKE :title');
+                $db->setParameter('title', '%' . $filter . '%');
+
+                continue;
+            }
+            if ('article_id' === $filterName) {
+                $db->andWhere('oa.id = :articleId');
+                $db->setParameter('articleId', $filter );
+
+                continue;
+            }
+            if ('product' === $filterName) {
+            
+                $db->andWhere('pl.name LIKE :product');
+                $db->setParameter('product', '%' . $filter . '%');
 
                 continue;
             }
             if ('position' === $filterName) {
                 $db->andWhere('oa.position LIKE :position');
-                $db->setParameter('position ', '%' . $filter . '%');
+                $db->setParameter('position', '%' . $filter . '%');
 
                 continue;
             }

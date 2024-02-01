@@ -7,15 +7,20 @@ use Ericc70\Openarticles\Command\BulkDisableArticleCommand;
 use Ericc70\Openarticles\Command\BulkEnableArticleCommand;
 use Ericc70\Openarticles\Command\DeletetArticleCommand;
 use Ericc70\Openarticles\Command\ToggleArticleCommand;
+use Ericc70\Openarticles\Command\UpdateArticlePositionCommand;
 use Ericc70\Openarticles\CommandHandler\DeleteArticleCommandHandler;
+use Ericc70\Openarticles\Exception\CannotUpdateArticlePositionException;
 use Ericc70\Openarticles\Exception\InvalidArticleExcaption;
+use Ericc70\Openarticles\Grid\Definition\Factory\ArticleDefinitionFactory;
 use Ericc70\Openarticles\Grid\Filters\ArticleFilters;
 use Ericc70\Openarticles\Query\getArticleState;
 use Ericc70\Openarticles\ValueObject\ArticleId;
 use PhpParser\Node\Stmt\TryCatch;
-
+use PrestaShopBundle\Component\CsvResponse;
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
+use PrestaShopBundle\Service\Grid\ResponseBuilder;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -35,6 +40,23 @@ class AdminOpenArticles extends FrameworkBundleAdminController
             'articleGrid' => $this->presentGrid($grid),
             'layoutHeaderToolbarBtn' => $this->getToolBarButtons()
         ]);
+    }
+
+
+    public function searchAction(Request $request) :RedirectResponse
+    {
+        /**
+         * @var ResponseBuilder $reponseBuilder
+         */
+        $reponseBuilder = $this->get('prestashop.bundle.grid.response_builder');
+
+        return $reponseBuilder->buildSearchResponse(
+            $this->get('openarticles.grid.definition.factory'),
+            $request,
+            ArticleDefinitionFactory::GRID_ID,
+            'oit_article_index'
+        );
+
     }
 
     public function createAction(Request $request,)
@@ -207,6 +229,29 @@ class AdminOpenArticles extends FrameworkBundleAdminController
         return $this->redirectToRoute('oit_article_index');
     }
 
+
+    public function updatePositionsAction(Request $request){
+        $positionsData = [
+            'positions' => $request->request->get('positions', null),
+        ];
+
+
+        try {
+            $this->getCommandBus()->handle(
+                new UpdateArticlePositionCommand($positionsData)
+            );
+
+            $this->addFlash('success', $this->trans('Successful update.', 'Admin.Notifications.Success'));
+        } catch (CannotUpdateArticlePositionException $e) {
+            $this->addFlash(
+                'error',
+                $this->getErrorMessageForException($e, $this->getErrorMessages())
+            );
+        }
+
+        return $this->redirectToRoute('oit_article_index');
+    }
+    
     public function getToolBarButtons()
     {
         return [
@@ -216,5 +261,43 @@ class AdminOpenArticles extends FrameworkBundleAdminController
                 'href' => $this->generateUrl('ec_article_create'),
             ]
         ];
+    }
+
+    public function exportAction(ArticleFilters $articleFilters) : CsvResponse
+    {
+        $articleFilters = new ArticleFilters(['limit' => null] + $articleFilters->all());
+        $gridFactory =   $this->get('openarticles.grid.grid_factory');
+        $articleGrid = $gridFactory->getGrid($articleFilters);
+
+        $headers = [
+            'articleId' => $this->trans('ID', 'Admin.Global'),
+            'langId' => $this->trans('Langue', 'Admin.Global'),
+            'title' => $this->trans('Title', 'Admin.Global'),
+            'product' => $this->trans('Product', 'Admin.Global'),
+            'resume' => $this->trans('Resume', 'Admin.Global'),
+            'description' => $this->trans('Description', 'Admin.Global'),
+            'position' => $this->trans('Position', 'Admin.Global'),
+            'active' => $this->trans('Active', 'Admin.Global'),
+        ];
+
+        $data = [];
+        foreach($articleGrid->getData()->getRecords()->all() as $record ){
+            $data[] = [
+                'articleId' => $record['article_id'],
+                'langId' => $record['lang_id'],
+                'title' => $record['title'],
+                'product' => $record['product'],
+                'resume' => $record['resume'],
+                'description' => $record['description'],
+                'position' => $record['position'],
+                'active' => $record['active'],
+            ];
+        }
+
+        return ( new CsvResponse())
+                    ->setData($data)
+                    ->setHeadersData($headers)
+                    ->setFileName("oit_article".date('Ymdd_His').'.csv' )
+                    ;
     }
 }
